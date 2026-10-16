@@ -1,75 +1,41 @@
-# React + TypeScript + Vite
+# Vitrine de produtos | Econverse
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicação de catálogo desenvolvida para o teste de Front-End da Econverse. A página consulta os produtos fornecidos pelo teste, apresenta preço em reais e abre um modal com os detalhes do item selecionado.
 
-Currently, two official plugins are available:
+## Tecnologias
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React e TypeScript
+- Vite
+- Sass
 
-## React Compiler
+## Requisitos
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js e npm instalados
 
-## Expanding the ESLint configuration
+## Como executar
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. Instale as dependências:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+   ```bash
+   npm install
+   ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+2. Inicie o servidor de desenvolvimento:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+   ```bash
+   npm run dev
+   ```
 
-```
+3. Abra no navegador o endereço local indicado pelo Vite.
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+O servidor de desenvolvimento encaminha `/api/produtos` para o JSON disponibilizado pela Econverse. A descrição do produto é ocultada no cartão e no modal quando repete o nome do item, evitando texto duplicado.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Verificações
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Gerar a versão de produção: `npm run build`
+- Executar o ESLint: `npm run lint`
+- Visualizar a versão compilada: `npm run preview`
 
-```
+## Enunciado
+
+As especificações completas do desafio estão em [README-ECONVERSE.md](./README-ECONVERSE.md).
