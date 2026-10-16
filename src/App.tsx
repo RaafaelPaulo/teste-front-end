@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react'
 import './App.scss'
 
@@ -13,6 +12,7 @@ type ProductsResponse = {
   success: boolean
   products: Product[]
 }
+
 const PRODUCTS_URL = '/api/produtos'
 
 const formatPrice = (price: number) =>
@@ -20,6 +20,14 @@ const formatPrice = (price: number) =>
     style: 'currency',
     currency: 'BRL',
   }).format(price)
+
+const getDistinctDescription = (product: Product) => {
+  const description = product.descriptionShort.trim()
+  const normalize = (value: string) =>
+    value.normalize('NFKC').replace(/\s+/g, ' ').toLocaleLowerCase('pt-BR')
+
+  return normalize(description) === normalize(product.productName) ? '' : description
+}
 
 function App() {
   const [products, setProducts] = useState<Product[]>([])
@@ -55,7 +63,7 @@ function App() {
     <main className="store">
       <header className="store-header">
         <p className="store-brand">ECONVERSE</p>
-<h1>Vitrine de produtos</h1>
+        <h1>Vitrine de produtos</h1>
         <p className="store-description">
           Confira nossos produtos e encontre o que procura.
         </p>
@@ -70,33 +78,37 @@ function App() {
 
         {!loading && !error && (
           <div className="products-grid">
-            {products.map((product, index) => (
-              <button
-                className="product-card"
-                key={`${product.productName}-${index}`}
-                type="button"
-                onClick={() => setSelectedProduct(product)}
-                aria-label={`Ver detalhes de ${product.productName}`}
-              >
-                <img
-                  className="product-image"
-                  src={product.photo}
-                  alt={product.productName}
-                />
+            {products.map((product) => {
+              const description = getDistinctDescription(product)
 
-                <span className="product-name">{product.productName}</span>
+              return (
+                <button
+                  className="product-card"
+                  key={product.productName}
+                  type="button"
+                  onClick={() => setSelectedProduct(product)}
+                  aria-label={`Ver detalhes de ${product.productName}`}
+                >
+                  <img
+                    className="product-image"
+                    src={product.photo}
+                    alt={product.productName}
+                  />
 
-                <span className="product-description">
-                  {product.descriptionShort}
-                </span>
+                  <span className="product-name">{product.productName}</span>
 
-                <span className="product-price">
-                  {formatPrice(product.price)}
-                </span>
+                  {description && (
+                    <span className="product-description">{description}</span>
+                  )}
 
-                <span className="product-card-link">Ver detalhes</span>
-              </button>
-            ))}
+                  <span className="product-price">
+                    {formatPrice(product.price)}
+                  </span>
+
+                  <span className="product-card-link">Ver detalhes</span>
+                </button>
+              )
+            })}
           </div>
         )}
       </section>
@@ -130,7 +142,9 @@ function App() {
 
             <h2 id="modal-title">{selectedProduct.productName}</h2>
 
-            <p>{selectedProduct.descriptionShort}</p>
+            {getDistinctDescription(selectedProduct) && (
+              <p>{getDistinctDescription(selectedProduct)}</p>
+            )}
 
             <p className="product-price">
               {formatPrice(selectedProduct.price)}
